@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="AmqpApp">
+<head>
+    <title>AMPc</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+    <link rel="stylesheet" href="css/bootstrap-theme.min.css" />
+    <link rel="stylesheet" href="css/custom.css" />
+    <script type="text/javascript" src="vendor/jquery-2.0.3.min.js"></script>
+    <script type="text/javascript" src="vendor/bootstrap.min.js"></script>
+    <script type="text/javascript" src="vendor/angular.min.js"></script>
+    <script type="text/javascript" src="lib/amqp.js"></script>
+    <script type="text/javascript" src="lib/app.js"></script>
+</head>
+<body>
+    <div>
+        <div class="navbar navbar-inverse navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="#">Node-Webkit-AMQP</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div ng-controller="MainCtrl" class="container">
+        <div>
+            <h2>Publish a Message</h2>
+            <div class="row">
+                <div class="col-md-12"><strong>Message ID</strong></div>
+                <div class="col-md-12">
+                    <input type="text" class="form-control" ng-model="id_box" disabled/>
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-md-6">
+                    <strong>Headers (JSON)</strong>
+                    <textarea class="form-control" rows="10" ng-model="header_box"></textarea>
+                </div>
+                <div class="col-md-6">
+                    <strong>Body (String or JSON)</strong>
+                    <textarea class="form-control" rows="10" ng-model="body_box"></textarea>
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-md-6">
+                    <button type="button" class="btn btn-default" ng-click="useSample()">
+                        Use Sample
+                    </button>
+                </div>
+                <div class="col-md-6 text-right">
+                    <button type="button" class="btn btn-default" ng-click="publish()">
+                        <i class="glyphicon glyphicon-send"></i>
+                        <span>Publish</span>
+                    </button>
+                    <button class="btn btn-danger" type="button"
+                            ng-show="!usingHeartbeat"
+                            ng-click="heartbeatOn()">
+                        <i class="glyphicon glyphicon-heart-empty"></i>
+                        <span>On</span>
+                    </button>
+                    <button class="btn btn-danger" type="button"
+                            ng-show="usingHeartbeat"
+                            ng-click="heartbeatOff()">
+                        <i class="glyphicon glyphicon-heart"></i>
+                        <span>Off</span>
+                    </button>
+                </div>
+            </div>
+            <h2>Messages Received</h2>
+            <div class="row">
+                <div class="col-md-12" ng-show="messages.length > 0">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>
+                                    <button type="button"
+                                            class="btn btn-default btn-xs"
+                                            ng-show="messages.length > 0"
+                                            ng-click="clearMessages()">
+                                        <i class="glyphicon glyphicon-remove"></i>
+                                        <span>Clear Messages</span>
+                                    </button>
+                                </th>
+                                <th>Headers</th>
+                                <th>Body</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="message in messages">
+                                <td><i class="glyphicon glyphicon-envelope"></i></td>
+                                <td>
+                                    <div ng-repeat="(key, value) in message.headers">
+                                        <strong>{{key}}:</strong> {{value}}
+                                    </div>
+                                </td>
+                                <td>
+                                    <div ng-repeat="(key, value) in message.body">
+                                        <strong>{{key}}:</strong> {{value}}
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-md-12" ng-show="messages.length == 0">
+                    <div class="jumbotron">
+                        <lead><strong>No messages in the queue.</strong><br />
+                            Try clicking on the <i class="glyphicon glyphicon-heart-empty"></i>
+                            button to start receiving messages.</lead>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

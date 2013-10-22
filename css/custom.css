@@ -1,0 +1,20 @@
+body {
+    padding-top: 50px;
+    padding-bottom: 20px;
+}
+
+.envelope {
+    background-color: bisque;
+}
+
+.headers {
+    background-color: #d59392;
+}
+
+.msgbody {
+    background-color: #b2dba1;
+}
+
+button span {
+    margin-left: 4px;
+}
